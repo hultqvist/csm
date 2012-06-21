@@ -1,9 +1,9 @@
 Complete System Monitoring
-by Peter Hultqvist, phq@endnode.se
-http://notes.endnode.se/
+by Peter Hultqvist, phq@silentorbit.com
+http://silentorbit.com/notes/
 
 For the latest version, get it from the git repository:
-	git clone http://src.endnode.se/git/csm/
+	git clone http://silentorbit.com/src/csm/
 
 This program uses rrdtool toghether with its own python code to collect and store running data about your system.
 It is mostly aimed at OpenVZ VPS systems having a /proc/user_beancounters file but it will work fine on other systems as well.

@@ -8,7 +8,10 @@
 # adjust which parameters to generate graphs from by adding or removing comment #
 import rrdtool, time, os, re, sys, glob
 
-from config import *
+# Default settings
+pinghosts = []
+if(os.path.exists("config.py")):
+	from config import *
 
 shift = 0
 interval = 24
@@ -455,3 +458,24 @@ for proc in dirList:
 	cmd += ' LINE1:pcpu#000000 '
 
 	os.system(cmd)
+
+# Disk usage
+dirList = os.listdir("rrd/")
+for file in dirList:
+	if file[0:5] != "disk-":
+		continue
+	name = file.replace(".rrd", "").replace("disk-", "")
+	print "Disk: " + name
+
+	#User memory usage
+	cmd = 'rrdtool graph '+prefix+'/disk-'+name+'.png '+cmd_common
+	cmd += '--title "Disk usage: '+name+'" -l0 -M -b 1024 '
+	cmd += ' DEF:size=rrd/'+file+':size:AVERAGE'
+	cmd += ' DEF:used=rrd/'+file+':used:AVERAGE'
+
+	cmd += ' AREA:size#cccccc '
+	cmd += ' AREA:used#00ff00 '
+	cmd += ' LINE1:used#000000 '
+
+	os.system(cmd)
+

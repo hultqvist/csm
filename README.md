@@ -48,7 +48,7 @@ csm-update is an init-script that can be used for this.
 
 # Generate graphs
 
-python graph.py [hours]
+python graph.py [hours] [offset] [path-prefix]
 Generates png images into the images folder for the last [hours], default 24.
 
 A typical use case is found in graph-all.sh

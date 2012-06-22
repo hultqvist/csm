@@ -6,9 +6,14 @@
 # Data collection program
 # This program collects the data and store it in the database
 
-from config import *
+import os
 
-import rrdtool, sys, re, time, os, subprocess
+# Default settings
+pinghosts = []
+if(os.path.exists("config.py")):
+	from config import *
+
+import rrdtool, sys, re, time, subprocess
 from check import *
 
 reline = re.compile('[^a-z]*([a-z]+) *([0-9]+) *[0-9]+ *[0-9]+ *[0-9]+ *([0-9]+) *')
@@ -136,6 +141,7 @@ def processlog():
 		rrdtool.update('rrd/user-'+user+'.rrd', data)
 
 def pinglog():
+
 	# Measure remote ping rtt
 	reping = re.compile('^rtt .* = ([0-9\.]+)/([0-9\.]+)/([0-9\.]+)/([0-9\.]+) ms$')
 
@@ -175,7 +181,33 @@ def memlog():
 		os.system('rrdtool update rrd/mem.rrd '+data)
 		print('rrdtool update rrd/mem.rrd '+data)
 
+def disklog():
+	# Measure disk usage
+	redisk = re.compile('^/dev/([a-z0-9]+) +([0-9]+) +([0-9]+) +([0-9]+)')
+
+	res = subprocess.Popen(['df', '-B', '1'], stdout=subprocess.PIPE)
+	if (res.wait() != 0):
+		return
+
+	out = res.communicate()[0].splitlines()
+	for l in out:
+		match = redisk.match(l)
+		if (match == None):
+			continue
+
+		dev = match.group(1)
+		size = int(match.group(2))
+		used = int(match.group(3))
+		data = "N:" + str(size) + ":" + str(used)
+
+		disk_check(dev)
+
+		print("disk: "+dev+", "+data)
+		os.system('rrdtool update rrd/disk-'+dev+'.rrd '+data)
+		print('rrdtool update rrd/disk-'+dev+'.rrd '+data)
+
 while 1:
+	disklog()
 	memlog()
 	pinglog()
 	beanlog()

@@ -142,15 +142,15 @@ def net_check(interface):
 		rra_year_max
 	)
 
-def disk_check():
-	path = "rrd/disk.rrd"
+def disk_check(device):
+	path = "rrd/disk-"+device+".rrd"
 	if os.path.exists(path):
 		return
 
 	print("Creating disk rrd")
 	rrdtool.create(path, "--step", str(step),
-		"DS:in:DERIVE:%i:0:U",
-		"DS:out:DERIVE:%i:0:U",
+		"DS:size:GAUGE:%i:0:U" % heartbeat,
+		"DS:used:GAUGE:%i:0:U" % heartbeat,
 		rra_month,
 		rra_year
 	)
@@ -186,3 +186,4 @@ def mem_check():
 		rra_year_min,
 		rra_year_max
 		)
+

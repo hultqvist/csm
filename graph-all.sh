@@ -2,7 +2,7 @@
 # This script can be called as a cron-job to updatethe  graphics
 # csm is assumed to be located in the root/home directory
 # of a user-account of its own.
-cd ~
+#cd ~
 mkdir images
 mkdir images/hour
 mkdir images/day

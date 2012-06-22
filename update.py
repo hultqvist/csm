@@ -183,7 +183,8 @@ def memlog():
 
 def disklog():
 	# Measure disk usage
-	redisk = re.compile('^/dev/([a-z0-9]+) +([0-9]+) +([0-9]+) +([0-9]+)')
+	redisk = re.compile('^/dev/([a-z0-9\\-]+) +([0-9]+) +([0-9]+) +([0-9]+)')
+	remap = re.compile('^/dev/mapper/([a-z0-9\\-]+) +([0-9]+) +([0-9]+) +([0-9]+)')
 
 	res = subprocess.Popen(['df', '-B', '1'], stdout=subprocess.PIPE)
 	if (res.wait() != 0):
@@ -192,6 +193,8 @@ def disklog():
 	out = res.communicate()[0].splitlines()
 	for l in out:
 		match = redisk.match(l)
+		if (match == None):
+			match = remap.match(l)
 		if (match == None):
 			continue
 

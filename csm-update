@@ -1,0 +1,42 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          csm
+# Required-Start:    
+# Required-Stop:     
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: csm system logging
+# Description:       Round robin system logging
+### END INIT INFO
+
+USER=csm
+RETVAL=0
+
+start() {
+      echo "Starting"
+      start-stop-daemon --background --start --chdir /home/csm --chuid "$USER" --exec /usr/bin/python -- /home/csm/update.py
+      RETVAL=$?
+}
+stop() {
+      echo "Stopping"
+      killall -q -w -u $USER python
+      RETVAL=$?
+}
+ 
+case "$1" in
+    start)
+      start
+  ;;
+    stop)
+      stop
+  ;;
+    restart)
+      stop
+      start
+  ;;
+    *)
+      echo "Usage: csm-update {start|stop|restart}"
+      exit 1
+  ;;
+esac
+exit $RETVAL

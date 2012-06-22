@@ -29,9 +29,15 @@ Installation/Upgrade:
 		  Where statuser is the username you will be running csm-update.py as.
 
 Collect data:
+
 	Your system must be running update.py to collect data about you project.
 	The data is stored in rrd files in rrd/ which are created automatically.
+	
+	csm-update is an init-script that can be used for this.
 
 Generate graphs:
+
 	python graph.py [hours]
 	Generates png images into the images folder for the last [hours], default 24.
+
+	A typical use case is found in graph-all.sh

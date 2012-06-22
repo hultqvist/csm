@@ -186,7 +186,7 @@ def disklog():
 	redisk = re.compile('^/dev/([a-z0-9\\-]+) +([0-9]+) +([0-9]+) +([0-9]+)')
 	remap = re.compile('^/dev/mapper/([a-z0-9\\-]+) +([0-9]+) +([0-9]+) +([0-9]+)')
 
-	res = subprocess.Popen(['df', '-B', '1'], stdout=subprocess.PIPE)
+	res = subprocess.Popen(['df', '-P', '-B', '1'], stdout=subprocess.PIPE)
 	if (res.wait() != 0):
 		return
 

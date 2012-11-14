@@ -36,11 +36,12 @@ sort($files);
 
 foreach($files as $file)
 {
-	echo '<p>'.$file.'</p>';
+	echo '<div>';
 	echo '<img src="hour/'.$file.'"/>';
 	echo '<img src="day/'.$file.'"/>';
 	echo '<img src="week/'.$file.'"/>';
 	echo '<img src="month/'.$file.'"/>';
+	echo '</div>';
 }
 
 ?>

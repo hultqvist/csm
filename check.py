@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# Copyright 2009 Peter Hultqvist, phq@endnode.se
+# Copyright 2012 Peter Hultqvist, phq@silentorbit.com
 # Distributed under the terms of the GNU Affero General Public License
 #
 # This file is called to make sure the rrd-files exists and create them if not

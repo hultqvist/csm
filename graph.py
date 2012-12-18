@@ -36,7 +36,7 @@ cmd_common = ' -E --start='+start+' --end='+end+' '
 #System memory
 print ("Sysmem")
 cmd = 'rrdtool graph '+prefix+'/mem.png '+cmd_common
-cmd += '--title "System memory usage" -l0 -M -b 1024 '
+cmd += '--title "System memory" -l0 -M -b 1024 '
 cmd += ' DEF:used=rrd/mem.rrd:used:AVERAGE'
 cmd += ' DEF:buffers=rrd/mem.rrd:buffers:AVERAGE'
 cmd += ' DEF:cached=rrd/mem.rrd:cached:AVERAGE'
@@ -181,7 +181,7 @@ for param in parameters:
 
 # CPU
 cmd = 'rrdtool graph '+prefix+'/cpu.png '+cmd_common
-cmd += '--title "CPU usage" -u100 -l0 -M '
+cmd += '--title "CPU" -u100 -l0 -M '
 cpugr = [
 	'DEF:uj=rrd/cpu.rrd:user:AVERAGE',
 	'DEF:nj=rrd/cpu.rrd:nice:AVERAGE',
@@ -421,7 +421,7 @@ for proc in dirList:
 
 	#User memory usage
 	cmd = 'rrdtool graph '+prefix+'/user-'+name+'-memory.png '+cmd_common
-	cmd += '--title "Memory usage: '+name+'" -l0 -M -b 1024 '
+	cmd += '--title "Memory: '+name+'" -l0 -M -b 1024 '
 	cmd += ' DEF:rss=rrd/'+proc+':rss:AVERAGE'
 	cmd += ' DEF:vsz=rrd/'+proc+':vsz:AVERAGE'
 	cmd += ' DEF:rss_min=rrd/'+proc+':rss:MIN'
@@ -444,7 +444,7 @@ for proc in dirList:
 
 	#User process usage
 	cmd = 'rrdtool graph '+prefix+'/user-'+name+'-cpu.png '+cmd_common
-	cmd += '--title "CPU usage: '+name+'" -l0 -M '
+	cmd += '--title "CPU: '+name+'" -l0 -M '
 	cmd += ' DEF:pcpu=rrd/'+proc+':pcpu:AVERAGE'
 	cmd += ' DEF:pcpu_min=rrd/'+proc+':pcpu:MIN'
 	cmd += ' DEF:pcpu_max=rrd/'+proc+':pcpu:MAX'
@@ -469,7 +469,7 @@ for file in dirList:
 
 	#User memory usage
 	cmd = 'rrdtool graph '+prefix+'/disk-'+name+'.png '+cmd_common
-	cmd += '--title "Disk usage: '+name+'" -l0 -M -b 1024 '
+	cmd += '--title "Disk: '+name+'" -l0 -M -b 1024 '
 	cmd += ' DEF:size=rrd/'+file+':size:AVERAGE'
 	cmd += ' DEF:used=rrd/'+file+':used:AVERAGE'
 

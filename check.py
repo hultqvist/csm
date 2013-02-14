@@ -172,18 +172,30 @@ def ping_check(host):
 
 def mem_check():
 	path = "rrd/mem.rrd"
-	if os.path.exists(path):
-		return
+	swap = "rrd/swap.rrd"
+	if os.path.exists(path) == False:
+		rrdtool.create(path, "--step", str(step),
+			"DS:used:GAUGE:%i:0:U" % heartbeat,
+			"DS:buffers:GAUGE:%i:0:U" % heartbeat,
+			"DS:cached:GAUGE:%i:0:U" % heartbeat,
+			"DS:swap:GAUGE:%i:0:U" % heartbeat,
+			rra_month,
+			rra_month_min,
+			rra_month_max,
+			rra_year,
+			rra_year_min,
+			rra_year_max
+			)
 
-	rrdtool.create(path, "--step", str(step),
-		"DS:used:GAUGE:%i:0:U" % heartbeat,
-		"DS:buffers:GAUGE:%i:0:U" % heartbeat,
-		"DS:cached:GAUGE:%i:0:U" % heartbeat,
-		rra_month,
-		rra_month_min,
-		rra_month_max,
-		rra_year,
-		rra_year_min,
-		rra_year_max
-		)
+	if os.path.exists(swap) == False:
+		rrdtool.create(swap, "--step", str(step),
+			"DS:swap:GAUGE:%i:0:U" % heartbeat,
+			rra_month,
+			rra_month_min,
+			rra_month_max,
+			rra_year,
+			rra_year_min,
+			rra_year_max
+			)
 
+	return

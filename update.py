@@ -166,20 +166,33 @@ def pinglog():
 def memlog():
 	# Measure remote ping rtt
 	remem = re.compile('^Mem: +([0-9]+) +([0-9]+) +([0-9]+) +([0-9]+) +([0-9]+) +([0-9]+)')
+	reswap = re.compile('^Swap: +([0-9]+) +([0-9]+) +([0-9]+)')
 
 	mem_check()
 	res = subprocess.Popen(['free', '-b'], stdout=subprocess.PIPE)
 	if (res.wait() == 0):
-		out = res.communicate()[0].splitlines()[1]
+		lines = res.communicate()[0].splitlines()
+		print lines
+		out = lines[1] #Mem:
+		print out
 		match = remem.match(out)
+		print match
 		used = int(match.group(2))
 		buffers = int(match.group(5))
 		cached = int(match.group(6))
 		used = used - buffers - cached
-		data = "N:" + str(used) + ":" + str(buffers) + ":"+str(cached)
+
+		out = lines[3] #Swap:
+		match = reswap.match(out)
+		swap = int(match.group(2))
+
+		data = "N:" + str(used) + ":" + str(buffers) + ":" + str(cached)
 		print("mem: "+data)
 		os.system('rrdtool update rrd/mem.rrd '+data)
-		print('rrdtool update rrd/mem.rrd '+data)
+
+		data = "N:" + str(swap)
+		print("swap: "+data)
+		os.system('rrdtool update rrd/swap.rrd '+data)
 
 def disklog():
 	# Measure disk usage
@@ -207,7 +220,6 @@ def disklog():
 
 		print("disk: "+dev+", "+data)
 		os.system('rrdtool update rrd/disk-'+dev+'.rrd '+data)
-		print('rrdtool update rrd/disk-'+dev+'.rrd '+data)
 
 while 1:
 	disklog()
